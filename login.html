@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ITA Virtual</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 25%, #01579b 50%, #0277bd 75%, #039be5 100%);
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            background-color: rgba(30, 30, 50, 0.95);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        nav .logo-nav {
+            color: hsl(0, 0%, 100%);
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        nav a.back-btn {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav a.back-btn:hover {
+            color: #ffd700;
+        }
+
+        nav .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        nav .logo-section img {
+            height: 35px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        nav .logo-section span {
+            color: #ffd700;
+            font-weight: 900;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 2px 6px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Canvas sfondo */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Container principale */
+        .container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .forum-container {
+            background: linear-gradient(135deg, rgba(25, 45, 50, 0.95) 0%, rgba(8, 20, 25, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 3rem;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.1);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .forum-container h1 {
+            color: #fff;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .forum-container p {
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background-color: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ffd700;
+            background-color: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-wrapper input {
+            flex: 1;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #ffd700;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toggle-password:hover {
+            color: #ffed4e;
+            transform: scale(1.15);
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+
+        .toggle-password:active {
+            transform: scale(0.95);
+        }
+
+        /* animated toggle icon */
+        .toggle-password svg {
+            width: 28px;
+            height: 28px;
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .toggle-password .toggle-circle {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(0);
+        }
+
+        /* moved on click when class revealed is present */
+        .toggle-password.revealed .toggle-circle {
+            transform: translateX(8px);
+        }
+
+        /* optional state when password is revealed */
+        .toggle-password.revealed svg {
+            stroke: #ff6b6b;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin-bottom: 0.8rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-link {
+            background: transparent;
+            color: #ffd700;
+            text-decoration: underline;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            width: auto;
+        }
+
+        .btn-link:hover {
+            color: #ffed4e;
+        }
+
+        .modal-footer {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .modal-footer a {
+            margin-top: 0.5rem;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .success-message {
+            color: #51cf66;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    
+    <!-- Navbar -->
+    <nav>
+        <div class="nav-left" style="display:flex;align-items:center;gap:0.5rem;">
+        </div>
+        <div class="logo-section">
+            <img src="Tail.png" alt="Logo">
+            <span>ITA Airways Virtual</span>
+        </div>
+        <div style="flex: 1;"></div>
+        <div style="display:flex;align-items:center;gap:10px;">
+            <a href="home.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Container principale -->
+    <div class="container">
+        <div class="forum-container">
+            <h1>Login</h1>
+            <p>Sign in to your account</p>
+            <div class="success-message" id="loginSuccess">Login successful! Redirecting...</div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                    <div class="error-message" id="emailError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <rect width="20" height="12" x="2" y="6" rx="6" ry="6" />
+                            <circle class="toggle-circle" cx="8" cy="12" r="2" />
+                        </svg>
+                    </button>
+                    </div>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+                <button type="submit" class="btn">Sign In</button>
+            </form>
+            <div class="modal-footer">
+                Don't have an account?
+                <a href="forum.html" class="btn-link">Register here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Authentication system
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+
+        function handleLogin(event) {
+            event.preventDefault();
+            clearErrors();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                document.getElementById('loginSuccess').style.display = 'block';
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 1000);
+            } else {
+                document.getElementById('passwordError').textContent = 'Incorrect email or password';
+                document.getElementById('passwordError').style.display = 'block';
+            }
+        }
+
+        function clearErrors() {
+            document.getElementById('emailError').style.display = 'none';
+            document.getElementById('passwordError').style.display = 'none';
+            document.getElementById('loginSuccess').style.display = 'none';
+        }
+
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const button = event.target;
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                button.classList.add('revealed');
+            } else {
+                field.type = 'password';
+                button.classList.remove('revealed');
+            }
+        }
+
+        // Canvas animato
+        (function(){
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext && canvas.getContext('2d');
+            if(!ctx) return;
+            let w = canvas.width = window.innerWidth;
+            let h = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', ()=>{
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+                initParticles();
+            });
+
+            const particles = [];
+
+            function rand(min, max){ return Math.random()*(max-min)+min; }
+
+            function initParticles(){
+                particles.length = 0;
+                const count = Math.max(50, Math.round((w*h)/70000));
+                for(let i=0;i<count;i++){
+                    particles.push({
+                        x: rand(0,w),
+                        y: rand(0,h),
+                        r: rand(0.6,2.6),
+                        baseAlpha: rand(0.15,0.9),
+                        dx: rand(-0.12,0.12),
+                        dy: rand(-0.04,0.04),
+                        blink: Math.random()*Math.PI*2
+                    });
+                }
+            }
+
+            function draw(){
+                ctx.clearRect(0,0,w,h);
+                for(const p of particles){
+                    p.x += p.dx;
+                    p.y += p.dy;
+                    p.blink += 0.02;
+                    const a = Math.max(0, Math.min(1, p.baseAlpha + Math.sin(p.blink)*0.35));
+
+                    const gx = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*8);
+                    gx.addColorStop(0, `rgba(3,155,229,${a})`);
+                    gx.addColorStop(0.35, `rgba(2,119,189,${a*0.7})`);
+                    gx.addColorStop(1, 'rgba(10,16,20,0)');
+
+                    ctx.fillStyle = gx;
+                    ctx.fillRect(p.x - p.r*8, p.y - p.r*8, p.r*16, p.r*16);
+
+                    if(p.x < -60) p.x = w + 60;
+                    if(p.x > w + 60) p.x = -60;
+                    if(p.y < -60) p.y = h + 60;
+                    if(p.y > h + 60) p.y = -60;
+                }
+                requestAnimationFrame(draw);
+            }
+
+            initParticles();
+            draw();
+        })();
+    </script>
+
+    
+
+    
+    </body>
+    </html>

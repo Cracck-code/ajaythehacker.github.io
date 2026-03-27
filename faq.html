@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - ITA Airways Virtual</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 25%, #01579b 50%, #0277bd 75%, #039be5 100%);
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: auto;
+            scroll-behavior: smooth;
+            background-attachment: fixed;
+        }
+
+        nav {
+            background-color: rgba(30, 30, 50, 0.95);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2.5rem;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav .nav-center {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+
+        nav .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-menu-btn {
+            background: none;
+            border: none;
+            color: #ffd700;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .user-menu-btn:hover {
+            border-color: #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: linear-gradient(135deg, rgba(25, 45, 50, 0.95) 0%, rgba(8, 20, 25, 0.95) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 5px;
+            margin-top: 0.5rem;
+            min-width: 150px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.95);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .user-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .user-dropdown button {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: none;
+            background: none;
+            color: #fff;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .user-dropdown button:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            padding-left: 1.5rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .fa, .fa-solid, .fa-regular, .fa-brands, .fas, .far, .fab {
+            color: #ffffff !important;
+        }
+
+        .container {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .faq-header h1 {
+            font-size: 2.5rem;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-header p {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1rem;
+        }
+
+        .new-question {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .new-question h2 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+        }
+
+        .new-question textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .new-question textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .new-question button {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .new-question button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .faq-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .faq-question {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-meta {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1rem;
+        }
+
+        .faq-answer {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 1rem;
+            border-radius: 5px;
+            border-left: 3px solid #51cf66;
+            margin-top: 1rem;
+        }
+
+        .faq-answer .answer-meta {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.5rem;
+        }
+
+        .answer-form {
+            margin-top: 1rem;
+        }
+
+        .answer-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .answer-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .answer-form button {
+            background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+            color: #fff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .answer-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 15px rgba(81, 207, 102, 0.4);
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #fa5252 50%, #ff6b6b 100%);
+            color: #fff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .delete-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .delete-btn:hover::before {
+            left: 100%;
+        }
+
+        .delete-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+            background: linear-gradient(135deg, #fa5252 0%, #ff6b6b 50%, #fa5252 100%);
+        }
+
+        .login-prompt {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+        }
+
+        .login-prompt a {
+            color: #ffd700;
+            text-decoration: underline;
+        }
+
+        .login-prompt a:hover {
+            color: #ffed4e;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    
+    <nav>
+        <div class="nav-left">
+        </div>
+        <div class="nav-center">
+            <a href="home.html"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="forum.html"><i class="fa-solid fa-user"></i> Registration</a>
+        </div>
+        <div class="nav-right">
+            <a id="accesso-btn" href="login.html"><i class="fa-solid fa-arrow-right-to-bracket"></i> Access</a>
+            <div id="userMenuContainer" style="display: none;">
+                <button class="user-menu-btn" id="userMenuBtn" onclick="toggleUserDropdown()">
+                    <span id="usernameBadge"></span>
+                </button>
+                <div class="user-dropdown" id="userDropdown">
+                    <button onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="faq-header">
+            <h1>Frequently Asked Questions</h1>
+            <p>Ask your questions and get answers from our moderators.</p>
+        </div>
+
+        <div id="newQuestionSection">
+            <!-- New question form will be inserted here -->
+        </div>
+
+        <div class="faq-list" id="faqList">
+            <!-- FAQ items will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Authentication system
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        // Migrate existing users to have role
+        users.forEach(user => {
+            if (!user.role) {
+                user.role = user.email === 'admin@ita.com' ? 'moderator' : 'member';
+            }
+        });
+        localStorage.setItem('users', JSON.stringify(users));
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        if (currentUser && !currentUser.role) {
+            currentUser.role = currentUser.email === 'admin@ita.com' ? 'moderator' : 'member';
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        }
+
+        // FAQ system
+        let faqPosts = JSON.parse(localStorage.getItem('faqPosts')) || [];
+
+        function updateNavbar() {
+            if (currentUser) {
+                document.getElementById('accesso-btn').style.display = 'none';
+                document.getElementById('userMenuContainer').style.display = 'flex';
+                document.getElementById('usernameBadge').textContent = currentUser.username;
+            } else {
+                document.getElementById('accesso-btn').style.display = 'flex';
+                document.getElementById('userMenuContainer').style.display = 'none';
+            }
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateNavbar();
+            document.getElementById('userDropdown').classList.remove('active');
+            window.location.href = 'home.html';
+        }
+
+        window.onclick = function(event) {
+            const dropdown = document.getElementById('userDropdown');
+            const menuBtn = document.getElementById('userMenuBtn');
+            
+            if (event.target !== menuBtn && !menuBtn.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        }
+
+        function renderFAQ() {
+            const faqList = document.getElementById('faqList');
+            const newQuestionSection = document.getElementById('newQuestionSection');
+            const isModerator = currentUser && currentUser.role === 'moderator';
+
+            if (currentUser) {
+                newQuestionSection.innerHTML = `
+                    <div class="new-question">
+                        <h2>Ask a Question</h2>
+                        <textarea id="newQuestionText" placeholder="Type your question here..."></textarea>
+                        <button onclick="addQuestion()">Submit Question</button>
+                    </div>
+                `;
+            } else {
+                newQuestionSection.innerHTML = `
+                    <div class="login-prompt">
+                        <p>You must be logged in to ask questions. <a href="login.html">Sign in here</a>.</p>
+                    </div>
+                `;
+            }
+
+            faqList.innerHTML = '';
+            faqPosts.forEach(post => {
+                const item = document.createElement('div');
+                item.className = 'faq-item';
+                item.innerHTML = `
+                    <div class="faq-question">${post.question}</div>
+                    <div class="faq-meta">Asked by ${post.author} on ${new Date(post.date).toLocaleString()}</div>
+                    ${post.answer ? `
+                        <div class="faq-answer">
+                            <div class="answer-meta">Answered by ${post.answeredBy} on ${new Date(post.answerDate).toLocaleString()}</div>
+                            ${post.answer}
+                            ${isModerator ? `<button class="delete-btn" onclick="deleteAnswer(${post.id})" style="margin-top: 0.5rem;">Delete Answer</button>` : ''}
+                        </div>
+                    ` : isModerator ? `
+                        <div class="answer-form">
+                            <textarea placeholder="Type your answer here..." id="answer-${post.id}"></textarea>
+                            <button onclick="answerQuestion(${post.id})">Submit Answer</button>
+                        </div>
+                    ` : ''}
+                    ${isModerator ? `<button class="delete-btn" onclick="deleteQuestion(${post.id})">Delete Question</button>` : ''}
+                `;
+                faqList.appendChild(item);
+            });
+        }
+
+        function addQuestion() {
+            const text = document.getElementById('newQuestionText').value.trim();
+            if (!text) return alert('Please enter a question.');
+            const post = {
+                id: Date.now(),
+                question: text,
+                author: currentUser.username,
+                date: new Date().toISOString(),
+                answer: null,
+                answeredBy: null,
+                answerDate: null
+            };
+            faqPosts.push(post);
+            localStorage.setItem('faqPosts', JSON.stringify(faqPosts));
+            document.getElementById('newQuestionText').value = '';
+            renderFAQ();
+        }
+
+        function answerQuestion(id) {
+            const answerText = document.getElementById(`answer-${id}`).value.trim();
+            if (!answerText) return alert('Please enter an answer.');
+            const post = faqPosts.find(p => p.id === id);
+            if (post) {
+                post.answer = answerText;
+                post.answeredBy = currentUser.username;
+                post.answerDate = new Date().toISOString();
+                localStorage.setItem('faqPosts', JSON.stringify(faqPosts));
+                renderFAQ();
+            }
+        }
+
+        function deleteAnswer(id) {
+            if (confirm('Are you sure you want to delete this answer?')) {
+                const post = faqPosts.find(p => p.id === id);
+                if (post) {
+                    post.answer = null;
+                    post.answeredBy = null;
+                    post.answerDate = null;
+                    localStorage.setItem('faqPosts', JSON.stringify(faqPosts));
+                    renderFAQ();
+                }
+            }
+        }
+
+        function deleteQuestion(id) {
+            console.log('Attempting to delete question with id:', id);
+            console.log('Current user:', currentUser);
+            console.log('Is moderator:', currentUser && currentUser.role === 'moderator');
+            if (confirm('Are you sure you want to delete this question?')) {
+                faqPosts = faqPosts.filter(p => p.id !== id);
+                localStorage.setItem('faqPosts', JSON.stringify(faqPosts));
+                renderFAQ();
+                console.log('Question deleted successfully');
+            } else {
+                console.log('Deletion cancelled by user');
+            }
+        }
+
+        // Initialize
+        updateNavbar();
+        renderFAQ();
+
+        // Background canvas animation (same as home.html)
+        (function(){
+            const canvas = document.querySelector('#bg-canvas');
+            if (!canvas || !canvas.getContext) return;
+            const ctx = canvas.getContext('2d');
+
+            let DPR = Math.max(1, window.devicePixelRatio || 1);
+            let W = 0, H = 0;
+            let particles = [];
+            const BASE_COUNT = 80;
+
+            function resize() {
+                DPR = Math.max(1, window.devicePixelRatio || 1);
+                W = window.innerWidth;
+                H = window.innerHeight;
+                canvas.style.width = W + 'px';
+                canvas.style.height = H + 'px';
+                canvas.width = Math.floor(W * DPR);
+                canvas.height = Math.floor(H * DPR);
+                ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+                const areaFactor = (W * H) / (1280 * 720);
+                const targetCount = Math.max(30, Math.round(BASE_COUNT * Math.sqrt(areaFactor)));
+                initParticles(targetCount);
+            }
+
+            function rand(min, max) { return Math.random() * (max - min) + min; }
+
+            function createParticle() {
+                const size = rand(3, 8);
+                return {
+                    x: rand(0, W),
+                    y: rand(0, H),
+                    vx: rand(-0.08, 0.08),
+                    vy: rand(-0.08, 0.08),
+                    alpha: rand(0.5, 0.95),
+                    size,
+                    wavePhase: rand(0, Math.PI * 2),
+                    brightness: rand(0.8, 1.2)
+                };
+            }
+
+            function initParticles(n) {
+                particles = new Array(n).fill(0).map(() => createParticle());
+            }
+
+            let lastT = performance.now();
+            function step(t) {
+                const dt = Math.min(50, t - lastT) / 16.67;
+                lastT = t;
+                ctx.clearRect(0, 0, W, H);
+                if (!particles.length) return requestAnimationFrame(step);
+
+                for (let p of particles) {
+                    p.x += p.vx * dt * 2;
+                    p.y += p.vy * dt * 2;
+                    p.wavePhase += 0.01;
+
+                    p.x += Math.sin((t / 4000) + p.wavePhase) * 0.3 * dt;
+                    p.y += Math.cos((t / 5000) + p.wavePhase) * 0.2 * dt;
+
+                    if (p.x < -10) p.x = W + 10;
+                    if (p.x > W + 10) p.x = -10;
+                    if (p.y < -10) p.y = H + 10;
+                    if (p.y > H + 10) p.y = -10;
+
+                    ctx.save();
+                    
+                    ctx.shadowColor = `rgba(173, 216, 230, ${p.alpha * 0.6})`;
+                    ctx.shadowBlur = p.size * 2.5;
+                    ctx.shadowOffsetX = 0;
+                    ctx.shadowOffsetY = 0;
+                    
+                    ctx.globalAlpha = p.alpha;
+                    
+                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+                    gradient.addColorStop(0, `rgba(255, 255, 255, ${p.brightness})`);
+                    gradient.addColorStop(0.6, `rgba(200, 230, 255, ${p.brightness * 0.8})`);
+                    gradient.addColorStop(1, `rgba(173, 216, 230, ${p.brightness * 0.4})`);
+                    ctx.fillStyle = gradient;
+                    
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.restore();
+                }
+
+                requestAnimationFrame(step);
+            }
+
+            window.addEventListener('resize', resize, { passive: true });
+            resize();
+            lastT = performance.now();
+            requestAnimationFrame(step);
+        })();
+    </script>
+
+    <style>
+    .site-footer {
+        background: linear-gradient(135deg, #0e81af 0%, #0277bd 50%, #01579b 100%);
+        color: rgba(255,255,255,0.9);
+        padding: 40px 20px;
+        text-align: center;
+        font-size: 14px;
+        position: relative;
+        overflow: hidden;
+        margin-top: auto;
+    }
+
+    .site-footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+        opacity: 0.1;
+    }
+
+    .site-footer .footer-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .site-footer p {
+        margin: 8px 0;
+        color: rgba(255,255,255,0.9);
+        font-weight: 300;
+    }
+
+    .site-footer .small {
+        color: rgba(255,255,255,0.75);
+        font-size: 13px;
+        margin-top: 12px;
+    }
+
+    .footer-links {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        flex-wrap: wrap;
+    }
+
+    .footer-links a {
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-links a:hover {
+        color: #ffd700;
+        background: rgba(255, 215, 0, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    @media (max-width: 600px) {
+        .site-footer {
+            padding: 30px 15px;
+            font-size: 13px;
+        }
+        .footer-links {
+            gap: 15px;
+        }
+    }
+    </style>
+
+</body>
+</html>
