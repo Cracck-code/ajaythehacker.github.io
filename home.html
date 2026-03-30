@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - ITA Virtual</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 25%, #01579b 50%, #0277bd 75%, #039be5 100%);
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: auto;
+            scroll-behavior: smooth;
+            background-attachment: fixed;
+        }
+
+        nav {
+            background-color: rgba(30, 30, 50, 0.95);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2.5rem;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav .nav-center {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+
+        nav .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .user-menu-btn {
+            background: none;
+            border: none;
+            color: #ffd700;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .user-menu-btn:hover {
+            border-color: #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* User dropdown menu */
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: linear-gradient(135deg, rgba(25, 45, 50, 0.95) 0%, rgba(8, 20, 25, 0.95) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 5px;
+            margin-top: 0.5rem;
+            min-width: 150px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.95);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .user-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .user-dropdown button {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: none;
+            background: none;
+            color: #fff;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .user-dropdown button:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            padding-left: 1.5rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Stile emoji navbar */
+        nav a .emoji-nav {
+            color: #ffffff;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.4);
+        }
+
+        nav a:hover .emoji-nav {
+            color: #ffffff;
+            transform: scale(1.2);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 12px rgba(200, 230, 255, 0.6);
+        }
+
+        /* Force Font Awesome icons to be white */
+        .fa, .fa-solid, .fa-regular, .fa-brands, .fas, .far, .fab {
+            color: #ffffff !important;
+        }
+
+        /* Server status lines animations */
+        .server-status .status-line, .server-status .link-line {
+            opacity: 0;
+            transform: translateY(6px);
+            animation: fadeUp 0.45s ease forwards;
+        }
+        .server-status .status-line { animation-delay: 0.05s; }
+        .server-status .link-line { animation-delay: 0.25s; }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        nav a.icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Main container */
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Background canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Emoji decor */
+        .emoji-decor {
+            position: fixed;
+            font-size: 2.5rem;
+            opacity: 0.7;
+            filter: drop-shadow(0 0 8px rgba(200, 230, 255, 0.6)) brightness(1.1);
+            z-index: 1;
+            pointer-events: none;
+            animation: float-emoji 6s ease-in-out infinite;
+        }
+
+        @keyframes float-emoji {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* Sezione sinistra - Server Status */
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* New home layout */
+        .container {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4rem;
+            padding: 4rem 3rem;
+        }
+
+        .content-left {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .content-left h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 1rem;
+            line-height: 1.15;
+        }
+
+        .content-left h1 .highlight {
+            color: #ffd700;
+        }
+
+        .content-left p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .cta-box {
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(139,63,45,0.15) 0%, rgba(105,51,40,0.1) 100%);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            flex-wrap: nowrap;
+        }
+
+        .cta-box p {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.95);
+            line-height: 1.5;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+            color: #000;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 900;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            white-space: nowrap !important;
+            word-wrap: normal;
+            text-align: center;
+            min-width: 260px;
+            max-width: 100%;
+            box-shadow: 0 8px 25px rgba(255,215,0,0.4);
+            position: relative;
+            overflow: visible;
+            z-index: 10;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            flex-shrink: 0;
+        }
+
+        /* Removed light-shine overlay */
+        .cta-button::before {
+            content: none;
+        }
+
+        .cta-button:hover::before {
+            left: 0;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(255,215,0,0.6);
+            background: linear-gradient(135deg, #ffed4e 0%, #ffd700 50%, #ffed4e 100%);
+        }
+
+        .content-right {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 750px;
+            perspective: 1200px;
+        }
+
+        .content-right img {
+            max-width: 1100px;
+            width: 115%;
+            height: auto;
+            filter: drop-shadow(0 100px 180px rgba(74, 144, 226, 0.5)) drop-shadow(0 50px 100px rgba(30, 90, 150, 0.4)) drop-shadow(0 30px 60px rgba(0,0,0,0.7)) brightness(1.14) contrast(1.18) saturate(1.12) sharpness(1.3);
+            box-shadow: 
+                0 0 80px rgba(74, 144, 226, 0.5), 
+                0 0 160px rgba(30, 90, 150, 0.35),
+                0 0 240px rgba(74, 144, 226, 0.2) inset,
+                0 120px 200px rgba(0,0,0,0.5);
+            image-rendering: auto;
+            image-rendering: crisp-edges;
+            image-rendering: high-quality;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            transition: transform 0.5s cubic-bezier(.2,.9,.3,1), filter 0.5s ease, box-shadow 0.5s ease;
+            transform: translateZ(0) rotateX(0deg) rotateY(0deg) scale(1);
+            will-change: transform, filter;
+        }
+        
+        .content-right img:hover {
+            transform: translateY(-20px) scale(1.08) rotateX(8deg);
+            filter: drop-shadow(0 120px 220px rgba(74, 144, 226, 0.6)) drop-shadow(0 70px 130px rgba(30, 90, 150, 0.5)) drop-shadow(0 40px 80px rgba(0,0,0,0.8)) brightness(1.18) contrast(1.22) saturate(1.15) sharpness(1.35);
+            box-shadow: 
+                0 0 100px rgba(74, 144, 226, 0.7), 
+                0 0 200px rgba(30, 90, 150, 0.5),
+                0 0 280px rgba(74, 144, 226, 0.3) inset,
+                0 150px 250px rgba(0,0,0,0.6);
+        }
+
+        .server-status {
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .server-status .text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .server-status .status-line {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: #ffd000;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            line-height: 1;
+            text-shadow: 0 2px 8px rgba(255, 200, 30, 0.08);
+        }
+
+        .server-status .link-line {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.75);
+            font-weight: 700;
+            text-transform: none;
+            letter-spacing: 0.6px;
+        }
+
+        .server-status .value.coming {
+            color: rgba(255,255,255,0.9);
+            font-weight: 800;
+        }
+
+        .server-status .value.online {
+            color: #ffd000;
+            text-shadow: 0 6px 18px rgba(255,200,30,0.15);
+        }
+
+        .server-status .play-button {
+            background: radial-gradient(circle at 35% 30%, rgba(255,246,184,1) 0%, rgba(255,220,80,1) 35%, rgba(255,200,30,1) 65%);
+            color: #fff;
+            border: 1px solid rgba(0,0,0,0.08);
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 18px 38px rgba(0,0,0,0.6), 0 6px 18px rgba(255,200,30,0.09) inset;
+            transition: transform 0.22s cubic-bezier(.2,.9,.3,1), box-shadow 0.22s ease;
+            position: relative;
+            overflow: visible;
+        }
+
+        .server-status .play-button i {
+            color: rgba(255,255,255,0.98);
+            font-size: 1.35rem;
+            line-height: 1;
+            text-shadow: 0 1px 0 rgba(0,0,0,0.55), 0 0 8px rgba(255,240,180,0.10);
+            -webkit-font-smoothing: antialiased;
+            transform-origin: center;
+        }
+
+        .server-status .play-button:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.55), 0 8px 24px rgba(255,200,30,0.12) inset;
+        }
+
+        /* Animations for entrance */
+        .server-status .status-line, .server-status .link-line {
+            opacity: 0;
+            transform: translateY(8px);
+            animation: revealUp 0.6s cubic-bezier(.2,.9,.3,1) forwards;
+        }
+        .server-status .status-line { animation-delay: 0.05s; }
+        .server-status .link-line { animation-delay: 0.2s; }
+
+        @keyframes revealUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Centro - Logo */
+        .center-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-container {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+        }
+
+        /* Sezione destra - Users Online */
+        .right-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .users-online {
+            text-align: center;
+        }
+
+        .users-online .icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .users-online .text {
+            font-size: 0.9rem;
+            color: #ffd700;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .left-section,
+            .right-section {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+            }
+
+            nav a {
+                font-size: 0.85rem;
+            }
+
+            .logo-container {
+                max-width: 300px;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(25, 45, 50, 0.95) 0%, rgba(8, 20, 25, 0.95) 100%);
+            margin: 5% auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .close-btn {
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #ffd700;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ffd700;
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin-bottom: 0.8rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-link {
+            background: transparent;
+            color: #ffd700;
+            text-decoration: underline;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn-link:hover {
+            color: #ffed4e;
+        }
+
+        .modal-footer {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .modal-footer button {
+            margin-top: 0.5rem;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .success-message {
+            color: #51cf66;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .user-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.8rem;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .user-info p {
+            color: #ffd700;
+            margin: 0.3rem 0;
+        }
+
+        /* Sezione Registrazione Fullscreen */
+        .register-section {
+            display: none !important;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            background: radial-gradient(ellipse at top left, rgba(25,45,50,0.95) 0%, rgba(8,20,25,0.95) 40%, rgba(6,10,15,0.98) 100%), linear-gradient(135deg, #061016 0%, #0b2b2a 50%, #0a1f2a 100%);
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .register-section.active {
+            display: flex !important;
+        }
+
+        .register-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .register-form-box {
+            background: linear-gradient(135deg, rgba(25, 45, 50, 0.9) 0%, rgba(8, 20, 25, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            animation: slideDown 0.3s ease;
+        }
+
+        .register-form-box h1 {
+            color: #fff;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .register-form-box p {
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .register-form-box .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .register-section .close-register {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            z-index: 1000;
+        }
+
+        .register-section .close-register:hover {
+            color: #ffd700;
+        }
+
+        /* Candidatura Section */
+        .candidatura-section {
+            background: linear-gradient(135deg, rgba(20, 35, 50, 0.9) 0%, rgba(10, 20, 30, 0.9) 100%);
+            padding: 3.5rem 2rem;
+            color: #fff;
+            position: relative;
+            z-index: 2;
+        }
+
+        .candidatura-section .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .candidatura-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: #ffd700;
+            text-align: center;
+        }
+
+        .candidatura-content > p {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .candidatura-section .form-group {
+            margin-bottom: 1.4rem;
+        }
+
+        .candidatura-section .form-group label {
+            display: block;
+            color: #ffd700;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .candidatura-section .form-group input,
+        .candidatura-section .form-group textarea {
+            width: 100%;
+            padding: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: 'Arial', sans-serif;
+            transition: all 0.3s ease;
+            resize: vertical;
+        }
+
+        .candidatura-section .form-group input:focus,
+        .candidatura-section .form-group textarea:focus {
+            outline: none;
+            border-color: #ffd700;
+            background-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.15);
+        }
+
+        .candidatura-section .form-group input::placeholder,
+        .candidatura-section .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .candidatura-section .cta-button {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(255,215,0,0.2);
+        }
+
+        .candidatura-section .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,215,0,0.3);
+        }
+
+        .candidatura-section .cta-button:active {
+            transform: translateY(0);
+        }
+
+        .candidatura-section .success-message {
+            color: #51cf66;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: rgba(81, 207, 102, 0.1);
+            border-left: 3px solid #51cf66;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .candidatura-section .success-message.show {
+            display: block;
+        }
+
+        .candidatura-section .error-message {
+            color: #ff6b6b;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 3px solid #ff6b6b;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .candidatura-section .error-message.show {
+            display: block;
+        }
+
+        /* Candidatura Fullscreen Modal */
+        .candidatura-fullscreen {
+            display: none !important;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            background: radial-gradient(ellipse at top left, rgba(25,45,50,0.95) 0%, rgba(8,20,25,0.95) 40%, rgba(6,10,15,0.98) 100%), linear-gradient(135deg, #061016 0%, #0b2b2a 50%, #0a1f2a 100%);
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .candidatura-fullscreen.active {
+            display: flex !important;
+        }
+
+        .candidatura-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .candidatura-form-box {
+            background: linear-gradient(135deg, rgba(25, 45, 50, 0.9) 0%, rgba(8, 20, 25, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            animation: slideDown 0.3s ease;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        .candidatura-form-box h1 {
+            color: #fff;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            color: #ffd700;
+        }
+
+        .candidatura-form-box > p {
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .candidatura-fullscreen .close-candidatura {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            z-index: 1000;
+        }
+
+        .candidatura-fullscreen .close-candidatura:hover {
+            color: #ffd700;
+        }
+
+        .candidatura-form-box .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .candidatura-form-box .form-group label {
+            display: block;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .candidatura-form-box .form-group input,
+        .candidatura-form-box .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            font-family: 'Arial', sans-serif;
+            transition: all 0.3s ease;
+            resize: vertical;
+        }
+
+        .candidatura-form-box .form-group input:focus,
+        .candidatura-form-box .form-group textarea:focus {
+            outline: none;
+            border-color: #ffd700;
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .candidatura-form-box .form-group input::placeholder,
+        .candidatura-form-box .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .candidatura-fullscreen .btn {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin-bottom: 0.8rem;
+        }
+
+        .candidatura-fullscreen .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .candidatura-fullscreen .success-message {
+            color: #51cf66;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: rgba(81, 207, 102, 0.1);
+            border-left: 3px solid #51cf66;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .candidatura-fullscreen .success-message.show {
+            display: block;
+        }
+
+        .candidatura-fullscreen .error-message {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 3px solid #ff6b6b;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .candidatura-fullscreen .error-message.show {
+            display: block;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+    /* Force all Font Awesome icons to be white */
+    .fa, .fa-solid, .fa-regular, .fa-brands, .fas, .far, .fab {
+      color: #ffffff !important;
+    }
+    /* opzionale: dimensione uniforme */
+    .fa { font-size: 1.1rem; line-height: 1; }
+        /* Modes carousel section */
+        .modes-section {
+            padding: 2rem 2rem 4rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 255, 0.9) 100%);
+            color: #000;
+            position: relative;
+            z-index: 2; /* sit above canvas */
+            margin-top: 0; /* wave divider handles overlap */
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Shift modes-section content slightly to the left so it aligns more to the page side */
+        .modes-section .container {
+            margin-left: 44px; /* move the whole block left */
+            margin-right: 0;
+            max-width: calc(100% - 88px);
+        }
+
+        /* Wave divider between top and modes-section */
+        .wave-divider {
+            width: 100%;
+            line-height: 0;
+            margin-bottom: -2px; /* tuck the svg to touch the section */
+        }
+        .wave-divider svg { display: block; width: 100%; height: 84px; }
+
+        .modes-section .subtitle {
+            color: #ffd000;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .modes-section h2 {
+            font-size: 3rem;
+            margin: 0 0 1.5rem 0;
+            color: #000;
+            text-align: center;
+        }
+
+        /* Place Alex image at the top-right of the modes-section without adding a new section.
+           Keep the carousel full width below; move the heading/content slightly left if needed. */
+        .modes-section { position: relative; }
+        .modes-section .offer-row { display: block; }
+        .modes-section .offer-left { max-width: calc(100% - 340px); padding-right: 0; }
+        .modes-section .alex-inline { position: absolute; right: 48px; top: 22px; width: 300px; display: flex; align-items: center; justify-content: center; }
+        .modes-section .alex-inline img { width: 100%; border-radius: 12px; box-shadow: 0 18px 40px rgba(0,0,0,0.6), 0 8px 24px rgba(255,215,80,0.06); transition: transform 300ms cubic-bezier(.2,.9,.3,1), filter 300ms ease; }
+        .modes-section .alex-inline img:hover { transform: translateY(-6px) scale(1.02); filter: brightness(1.06) saturate(1.04); }
+
+        @media (max-width: 1100px) {
+            .modes-section .offer-left { max-width: calc(100% - 240px); }
+            .modes-section .alex-inline { right: 28px; width: 220px; top: 20px; }
+        }
+
+            .modes-section .container { margin-left: 16px; max-width: calc(100% - 32px); }
+        @media (max-width: 900px) {
+            /* On smaller screens stack and let the image sit above the content */
+            .modes-section .offer-left { max-width: 100%; }
+            .modes-section .alex-inline { position: static; width: 100%; margin-bottom: 12px; right: auto; top: auto; }
+        }
+
+        .carousel-wrap {
+            position: relative;
+            margin-top: 0.8rem;
+            padding-bottom: 1.5rem;
+        }
+
+        /* Grid-like carousel: 3 cards per row on desktop */
+        .carousel-track {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            overflow-x: visible;
+            padding: 1rem 1rem 2rem 1rem;
+        }
+        .carousel-track::-webkit-scrollbar { display: none; }
+
+        .carousel-item {
+            flex: 0 0 calc((100% - 56px) / 3);
+            max-width: calc((100% - 56px) / 3);
+            height: 420px;
+            border-radius: 16px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            overflow: hidden;
+        }
+
+        .carousel-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.1) 0%, transparent 50%, rgba(74, 144, 226, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .carousel-item:hover::before {
+            opacity: 1;
+        }
+
+        .carousel-item:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+        }
+
+        .carousel-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.0) 30%, rgba(0,0,0,0.55) 100%);
+        }
+
+        .carousel-item .card {
+            position: absolute;
+            right: 22px;
+            bottom: 22px;
+            left: 22px;
+            padding: 2rem;
+            border-radius: 12px;
+            background: rgba(0,0,0,0.55);
+            border: 2px solid rgba(255,255,255,0.12);
+            color: #fff;
+            transition: transform 0.35s ease, opacity 0.35s ease;
+            backdrop-filter: blur(6px);
+        }
+
+        .carousel-item .card h3 { margin: 0 0 0.9rem 0; font-size: 1.9rem; font-weight: 800; }
+
+        .carousel-item .card p { margin: 0; color: rgba(255,255,255,0.92); line-height: 1.6; font-size: 1.06rem; }
+
+        .carousel-item { transform: scale(1); filter: brightness(1) contrast(1) saturate(1); }
+        .carousel-item:not(.active) { transform: scale(1); filter: brightness(1) contrast(1) saturate(0.98); }
+        .carousel-item.active { transform: scale(1.02); filter: brightness(1.02) contrast(1.02) saturate(1.03); }
+
+        /* Medium screens: 2 per row */
+        @media (max-width: 1200px) {
+            .carousel-item { flex: 0 0 calc((100% - 28px) / 2); max-width: calc((100% - 28px) / 2); height: 420px; }
+        }
+
+        /* Small screens: stack vertically */
+        @media (max-width: 768px) {
+            .carousel-track { gap: 20px; padding: 1rem; }
+            .carousel-item { flex: 0 0 100%; max-width: 100%; height: auto; }
+            .carousel-item::after { background: linear-gradient(180deg, rgba(0,0,0,0.0) 20%, rgba(0,0,0,0.6) 100%); }
+            .carousel-item .card { left: 16px; right: 16px; bottom: 18px; padding: 1.4rem; }
+        }
+
+        .carousel-controls {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            display: none; /* Hide navigation buttons */
+            gap: 8px;
+            z-index: 20;
+        }
+
+        /* Frame with wavy yellow border around carousel */
+        .carousel-frame {
+            position: relative;
+            padding: 18px; /* space for the border stroke */
+            border-radius: 16px;
+            overflow: visible;
+        }
+
+        .carousel-wrap { position: relative; }
+
+        /* Background wave that stays fixed under the carousel (anchored by JS) */
+        .carousel-wave-border,
+        .carousel-wave-bg {
+            position: fixed;
+            left: 0;
+            right: 0;
+            height: 240px;
+            pointer-events: none;
+            z-index: 1; /* behind carousel content */
+            mix-blend-mode: normal;
+            transform-origin: center top;
+            filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6));
+        }
+
+        /* Ensure carousel content sits above the fixed background */
+        .modes-section { position: relative; z-index: 2; }
+        .carousel-frame { z-index: 3; }
+
+        .carousel-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: #fff;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: inline-grid;
+            place-items: center;
+            cursor: pointer;
+        }
+
+    </style>
+    <style>
+    /* Navbar icon animations */
+    nav a { position: relative; display: inline-flex; align-items: center; gap: 0.6rem; }
+    nav a .fa { display: inline-block; position: relative; transform-origin: center; transition: transform 340ms cubic-bezier(.2,.9,.3,1), filter 340ms ease, text-shadow 340ms ease, color 220ms ease; }
+
+    /* Hover: stronger pop + rotate + glow + highlight */
+    nav a:hover .fa {
+        transform: translateY(-8px) rotate(-12deg) scale(1.28);
+        filter: drop-shadow(0 18px 40px rgba(255,215,80,0.20));
+        text-shadow: 0 10px 30px rgba(255,215,80,0.12);
+        color: #ffd700 !important;
+        animation: popBounce 420ms cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    /* Animated halo behind icon on hover */
+    nav a .fa::after {
+        content: '';
+        position: absolute;
+        left: 50%; top: 50%;
+        width: 64px; height: 64px; border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        background: radial-gradient(circle at 50% 40%, rgba(255,215,80,0.26), rgba(255,215,80,0.10) 45%, rgba(255,215,80,0.04) 65%, transparent 100%);
+        pointer-events: none; z-index: -1; transition: transform 320ms cubic-bezier(.2,.9,.3,1), opacity 320ms ease;
+        opacity: 0;
+    }
+    nav a:hover .fa::after {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+    }
+
+    /* Animated underline / highlight bar below link text */
+    nav a::after {
+        content: '';
+        position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%) scaleX(0);
+        width: 80%; height: 5px; border-radius: 4px;
+        background: linear-gradient(90deg, rgba(255,235,150,0.0), rgba(255,215,80,1), rgba(255,235,150,0.0));
+        transform-origin: center; transition: transform 280ms cubic-bezier(.2,.9,.3,1), opacity 220ms ease;
+        opacity: 0.98;
+    }
+    nav a:hover::after { transform: translateX(-50%) scaleX(1); }
+
+    @keyframes popBounce {
+        0% { transform: translateY(0) rotate(0deg) scale(1); }
+        60% { transform: translateY(-10px) rotate(-6deg) scale(1.38); }
+        100% { transform: translateY(-8px) rotate(-12deg) scale(1.28); }
+    }
+
+    /* Active / click feedback */
+    nav a:active .fa, .fa.icon-pop {
+        transform: translateY(-2px) rotate(-4deg) scale(1.06);
+        transition: transform 180ms ease;
+    }
+
+    /* Gentle idle float for a modern feel (very subtle) */
+    @keyframes floatIcon { 0% { transform: translateY(0) } 50% { transform: translateY(-3px) } 100% { transform: translateY(0) } }
+    nav .nav-center a .fa { animation: floatIcon 6.5s ease-in-out infinite; animation-delay: 0.4s; opacity: 0.98; }
+
+    /* Focus for keyboard accessibility */
+    nav a:focus { outline: none; }
+    nav a:focus .fa { transform: translateY(-6px) scale(1.14); box-shadow: 0 8px 26px rgba(255,215,80,0.08); }
+
+    /* Small badge used by script for ripple (optional) */
+    .icon-ripple {
+        position: absolute; border-radius: 50%; pointer-events: none; transform: scale(0); opacity: 0.35; background: radial-gradient(circle, rgba(255,215,80,0.18) 0%, rgba(255,215,80,0.04) 60%);
+        transition: transform 420ms cubic-bezier(.2,.9,.3,1), opacity 420ms ease;
+    }
+    .icon-ripple.show { transform: scale(2.4); opacity: 0; }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    
+    <!-- Navbar -->
+    <nav>
+        <div class="nav-left" style="display:flex;align-items:center;gap:0.5rem;">
+        </div>
+        <div class="nav-center">
+            <a href="regole.html"><i class="fa-solid fa-book-bookmark"></i> Rules</a>
+            <a href="topilots.html"><i class="fa-solid fa-jet-fighter-up"></i> Top Pilots</a>
+            <a href="faq.html"><i class="fa-solid fa-envelope"></i> FAQ</a>
+            <a href="staff.html"><i class="fa-solid fa-angles-down"></i> Staff</a>
+        </div>
+        <div class="nav-right">
+            <a id="accesso-btn" href="login.html"><i class="fa-solid fa-arrow-right-to-bracket"></i> Access</a>
+            <a id="registrazione-btn" href="forum.html"><i class="fa-solid fa-user"></i> Registration</a>
+            <div id="userMenuContainer" style="display: none;">
+                <button class="user-menu-btn" id="userMenuBtn" onclick="toggleUserDropdown()">
+                    <span id="usernameBadge"></span>
+                </button>
+                <div class="user-dropdown" id="userDropdown">
+                    <button onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sezione Registrazione Fullscreen -->
+    <div id="registerSection" class="register-section">
+        <button class="close-register" onclick="closeRegisterFullscreen()">&times;</button>
+        <div class="register-container">
+            <div class="register-form-box">
+                <h1>Welcome</h1>
+                <p>Create your account to access</p>
+                <div class="success-message" id="registerFullscreenSuccess">Registration completed! Sign in now.</div>
+                <form id="registerFullscreenForm" onsubmit="handleRegisterFullscreen(event)">
+                    <div class="form-group">
+                        <label for="regUsername">Username</label>
+                        <input type="text" id="regUsername" placeholder="Choose a username" required>
+                        <div class="error-message" id="regUsernameError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email</label>
+                        <input type="email" id="regEmail" placeholder="Enter your email" required>
+                        <div class="error-message" id="regEmailError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Password</label>
+                        <input type="password" id="regPassword" placeholder="Create a password" required>
+                        <div class="error-message" id="regPasswordError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="regConfirmPassword">Confirm Password</label>
+                        <input type="password" id="regConfirmPassword" placeholder="Repeat password" required>
+                        <div class="error-message" id="regConfirmError"></div>
+                    </div>
+                    <button type="submit" class="btn">Register</button>
+                </form>
+                <div class="modal-footer">
+                    Already have an account?
+                    <button class="btn-link" onclick="switchFromRegister()">Sign in here</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container principale -->
+    <div class="container">
+        <!-- Left Section - Text -->
+        <div class="content-left">
+            <h1>AN AWARD-WINNING <span class="highlight">VIRTUAL</span> <span class="highlight">AIRLINE!</span></h1>
+            <p>Italian Airlines Virtual is a professionally managed community of flight simulation enthusiasts who want to replicate the operations of a real airline.
+
+                Our main goal is to provide a realistic and engaging virtual aviation environment. We give our pilots the tools and resources needed to simulate the life of an airline pilot, from mastering complex aircraft to flying virtual routes.</p>
+            <div class="cta-box">
+                <p>Join our Discord server to get all the info and talk with us and the community!</p>
+                <button class="cta-button" onclick="window.open('https://discord.gg/4AuweabPM8', '_blank')">discord.gg/ItaAirways</button>
+            </div>
+        </div>
+
+        <!-- Right Section - Image -->
+        <div class="content-right">
+            <img src="home.png" alt="Home Texture Pack">
+        </div>
+    </div>
+
+    <!-- New Section: Modes (carousel) -->
+    <section class="modes-section">
+        <div class="container">
+            <div style="width:100%">
+                <div class="subtitle">WHAT WE OFFER</div>
+                <h2>OUR SERVICES</h2>
+                <div class="carousel-frame">
+                    <div class="carousel-wrap">
+                        <div class="carousel-controls">
+                            <button class="carousel-btn" id="prevBtn">◀</button>
+                            <button class="carousel-btn" id="nextBtn">▶</button>
+                        </div>
+                        <div class="carousel-track" id="carouselTrack">
+                        <div class="carousel-item" style="background-image:url('Carriera.png')">
+                            <div class="card">
+                                <h3>Structured Career Progression</h3>
+                                <p>Advance through the ranks, unlock new aircraft, and expand your route access. A realistic and engaging career path that rewards your dedication.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item" style="background-image:url('Flotta.png')">
+                            <div class="card">
+                                <h3>Varied and Modern Fleet</h3>
+                                <p>Fly a complete and meticulously maintained fleet of Italian Airlines aircraft. From initial certification to the most modern aircraft.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item" style="background-image:url('Rotte.png')">
+                            <div class="card">
+                                <h3>Extended Route Network</h3>
+                                <p>Operate flights on a vast realistic network of domestic and international destinations. Explore the world of Italian Airlines Virtual.</p>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <svg class="carousel-wave-border" viewBox="0 0 1440 320" preserveAspectRatio="none" aria-hidden="true">
+                        <path d="M0,40 C120,0 240,80 360,40 C480,0 600,80 720,40 C840,0 960,80 1080,40 C1200,0 1320,80 1440,40 L1440,280 C1320,240 1200,320 1080,280 C960,240 840,320 720,280 C600,240 480,320 360,280 C240,240 120,320 0,280 Z" fill="none" stroke="#ffd000" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sezione Candidatura Fullscreen -->
+    <div id="candidaturaSection" class="candidatura-fullscreen">
+        <button class="close-candidatura" onclick="closeCandidaturaFullscreen()">&times;</button>
+        <div class="candidatura-container">
+            <div class="candidatura-form-box">
+                <h1>Apply as Discord Manager</h1>
+                <p>Fill out the form below with all your information.</p>
+                <form id="candidaturaForm" onsubmit="handleCandidatura(event)">
+                    <div class="form-group">
+                        <label for="candNome">Full Name</label>
+                        <input type="text" id="candNome" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="candEmail">Email</label>
+                        <input type="email" id="candEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="candEta">Age</label>
+                        <input type="number" id="candEta" min="13" max="120" placeholder="Enter your age" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="candEsperienza">Experience as a Discord Moderator/Manager</label>
+                        <textarea id="candEsperienza" placeholder="Tell me about your experience and servers where you moderated..." rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="candAttivita">What activities would you like to perform on our server?</label>
+                        <textarea id="candAttivita" placeholder="E.g.: moderation, support, event management, etc..." rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="candProve">Evidence or Certificates (link or description)</label>
+                        <textarea id="candProve" placeholder="Discord server links where you worked, certificates, portfolio, etc..." rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="candMotivazione">Why would you like to be part of our team?</label>
+                        <textarea id="candMotivazione" placeholder="Explain your motivations..." rows="4" required></textarea>
+                    </div>
+                    <div class="success-message" id="candidaturaSuccess">Application sent successfully! We will contact you soon.</div>
+                    <div class="error-message" id="candidaturaError"></div>
+                    <button type="submit" class="btn">Submit Application</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login</h2>
+                <span class="close-btn" onclick="closeLoginModal()">&times;</span>
+            </div>
+            <div class="success-message" id="loginSuccess">Login successful!</div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                    <div class="error-message" id="loginEmailError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    <div class="error-message" id="loginPasswordError"></div>
+                </div>
+                <button type="submit" class="btn">Sign In</button>
+            </form>
+            <div class="modal-footer">
+                Don't have an account?
+                <button class="btn-link" onclick="switchToRegister()">Register here</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Registration</h2>
+                <span class="close-btn" onclick="closeRegisterModal()">&times;</span>
+            </div>
+            <div class="success-message" id="registerSuccess">Registration completed! Sign in now.</div>
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="registerUsername">Username</label>
+                    <input type="text" id="registerUsername" placeholder="Choose a username" required>
+                    <div class="error-message" id="registerUsernameError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" placeholder="Enter your email" required>
+                    <div class="error-message" id="registerEmailError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" placeholder="Create a password" required>
+                    <div class="error-message" id="registerPasswordError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Confirm Password</label>
+                    <input type="password" id="registerConfirmPassword" placeholder="Repeat password" required>
+                    <div class="error-message" id="registerConfirmError"></div>
+                </div>
+                <button type="submit" class="btn">Register</button>
+            </form>
+            <div class="modal-footer">
+                Already have an account?
+                <button class="btn-link" onclick="switchToLogin()">Sign in here</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logged User Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Profile</h2>
+                <span class="close-btn" onclick="closeUserModal()">&times;</span>
+            </div>
+            <div class="user-info" id="userInfo">
+                <p id="userUsername"></p>
+                <p id="userEmail"></p>
+            </div>
+            <button class="btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    </div>
+
+        <script>
+        // Authentication system - solo lettura da localStorage (impostato da login.html/forum.html)
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+
+        function openLoginModal() {
+            if (currentUser) {
+                openUserModal();
+            } else {
+                document.getElementById('loginModal').style.display = 'block';
+            }
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            clearLoginErrors();
+        }
+
+        function openRegisterModal() {
+            document.getElementById('registerModal').style.display = 'block';
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').style.display = 'none';
+            clearRegisterErrors();
+        }
+
+        function openUserModal() {
+            if (currentUser) {
+                document.getElementById('userUsername').textContent = 'User: ' + currentUser.username;
+                document.getElementById('userEmail').textContent = 'Email: ' + currentUser.email;
+                document.getElementById('userInfo').style.display = 'block';
+                document.getElementById('userModal').style.display = 'block';
+            }
+        }
+
+        function closeUserModal() {
+            document.getElementById('userModal').style.display = 'none';
+        }
+
+        function switchToRegister() {
+            closeLoginModal();
+            openRegisterModal();
+        }
+
+        function switchToLogin() {
+            closeRegisterModal();
+            openLoginModal();
+        }
+
+        function openRegisterFullscreen() {
+            document.getElementById('registerSection').classList.add('active');
+        }
+
+        function closeRegisterFullscreen() {
+            document.getElementById('registerSection').classList.remove('active');
+            clearRegisterFullscreenErrors();
+        }
+
+        function switchFromRegister() {
+            closeRegisterFullscreen();
+            openLoginModal();
+        }
+
+        function handleRegisterFullscreen(event) {
+            event.preventDefault();
+            clearRegisterFullscreenErrors();
+
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+            let hasError = false;
+
+            if (email === 'admin@ita.com') {
+                const adminCount = users.filter(u => u.email === 'admin@ita.com').length;
+                if (adminCount >= 3) {
+                    document.getElementById('regEmailError').textContent = 'This email can only be used by up to 3 people';
+                    document.getElementById('regEmailError').style.display = 'block';
+                    hasError = true;
+                }
+            } else if (users.find(u => u.email === email)) {
+                document.getElementById('regEmailError').textContent = 'This email is already registered';
+                document.getElementById('regEmailError').style.display = 'block';
+                hasError = true;
+            }
+
+            if (password.length < 6) {
+                document.getElementById('regPasswordError').textContent = 'La password deve avere almeno 6 caratteri';
+                document.getElementById('regPasswordError').style.display = 'block';
+                hasError = true;
+            }
+
+            if (password !== confirmPassword) {
+                document.getElementById('regConfirmError').textContent = 'Le password non coincidono';
+                document.getElementById('regConfirmError').style.display = 'block';
+                hasError = true;
+            }
+
+            if (!hasError) {
+                const newUser = { username, email, password, role: email === 'admin@ita.com' ? 'moderator' : 'member' };
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                document.getElementById('registerFullscreenSuccess').style.display = 'block';
+                setTimeout(() => {
+                    closeRegisterFullscreen();
+                    currentUser = newUser;
+                    localStorage.setItem('currentUser', JSON.stringify(newUser));
+                    updateNavbar();
+                }, 1500);
+            }
+        }
+
+        function clearRegisterFullscreenErrors() {
+            document.getElementById('regUsernameError').style.display = 'none';
+            document.getElementById('regEmailError').style.display = 'none';
+            document.getElementById('regPasswordError').style.display = 'none';
+            document.getElementById('regConfirmError').style.display = 'none';
+            document.getElementById('registerFullscreenSuccess').style.display = 'none';
+            document.getElementById('regUsername').value = '';
+            document.getElementById('regEmail').value = '';
+            document.getElementById('regPassword').value = '';
+            document.getElementById('regConfirmPassword').value = '';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            clearLoginErrors();
+
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                document.getElementById('loginSuccess').style.display = 'block';
+                setTimeout(() => {
+                    closeLoginModal();
+                    updateNavbar();
+                }, 1000);
+            } else {
+                document.getElementById('loginPasswordError').textContent = 'Email o password non corrette';
+                document.getElementById('loginPasswordError').style.display = 'block';
+            }
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            clearRegisterErrors();
+
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+
+            let hasError = false;
+
+            if (email === 'admin@ita.com') {
+                const adminCount = users.filter(u => u.email === 'admin@ita.com').length;
+                if (adminCount >= 3) {
+                    document.getElementById('registerEmailError').textContent = 'This email can only be used by up to 3 people';
+                    document.getElementById('registerEmailError').style.display = 'block';
+                    hasError = true;
+                }
+            } else if (users.find(u => u.email === email)) {
+                document.getElementById('registerEmailError').textContent = 'This email is already registered';
+                document.getElementById('registerEmailError').style.display = 'block';
+                hasError = true;
+            }
+
+            if (password.length < 6) {
+                document.getElementById('registerPasswordError').textContent = 'La password deve avere almeno 6 caratteri';
+                document.getElementById('registerPasswordError').style.display = 'block';
+                hasError = true;
+            }
+
+            if (password !== confirmPassword) {
+                document.getElementById('registerConfirmError').textContent = 'Le password non coincidono';
+                document.getElementById('registerConfirmError').style.display = 'block';
+                hasError = true;
+            }
+
+            if (!hasError) {
+                const newUser = { username, email, password, role: email === 'admin@ita.com' ? 'moderator' : 'member' };
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                document.getElementById('registerSuccess').style.display = 'block';
+                setTimeout(() => {
+                    closeRegisterModal();
+                    switchToLogin();
+                }, 1000);
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            closeUserModal();
+            updateNavbar();
+        }
+
+        function clearLoginErrors() {
+            document.getElementById('loginEmailError').style.display = 'none';
+            document.getElementById('loginPasswordError').style.display = 'none';
+            document.getElementById('loginSuccess').style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+        function clearRegisterErrors() {
+            document.getElementById('registerUsernameError').style.display = 'none';
+            document.getElementById('registerEmailError').style.display = 'none';
+            document.getElementById('registerPasswordError').style.display = 'none';
+            document.getElementById('registerConfirmError').style.display = 'none';
+            document.getElementById('registerSuccess').style.display = 'none';
+            document.getElementById('registerUsername').value = '';
+            document.getElementById('registerEmail').value = '';
+            document.getElementById('registerPassword').value = '';
+            document.getElementById('registerConfirmPassword').value = '';
+        }
+
+        function updateNavbar() {
+            if (currentUser) {
+                document.getElementById('accesso-btn').style.display = 'none';
+                document.getElementById('registrazione-btn').style.display = 'none';
+                document.getElementById('userMenuContainer').style.display = 'flex';
+                document.getElementById('usernameBadge').textContent = currentUser.username;
+            } else {
+                document.getElementById('accesso-btn').style.display = 'flex';
+                document.getElementById('registrazione-btn').style.display = 'flex';
+                document.getElementById('userMenuContainer').style.display = 'none';
+            }
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateNavbar();
+            document.getElementById('userDropdown').classList.remove('active');
+            window.location.href = 'home.html';
+        }
+
+        // Chiudi dropdown al click esterno
+        window.onclick = function(event) {
+            const dropdown = document.getElementById('userDropdown');
+            const menuBtn = document.getElementById('userMenuBtn');
+            
+            if (event.target !== menuBtn && !menuBtn.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        }
+
+        // Inizializza la navbar
+        updateNavbar();
+
+                (function(){
+    const canvas = document.querySelector('#bg-canvas');
+    if (!canvas || !canvas.getContext) return;
+    const ctx = canvas.getContext('2d');
+
+    let DPR = Math.max(1, window.devicePixelRatio || 1);
+    let W = 0, H = 0;
+    let particles = [];
+    const BASE_COUNT = 80;
+
+    function resize() {
+        DPR = Math.max(1, window.devicePixelRatio || 1);
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.style.width = W + 'px';
+        canvas.style.height = H + 'px';
+        canvas.width = Math.floor(W * DPR);
+        canvas.height = Math.floor(H * DPR);
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        const areaFactor = (W * H) / (1280 * 720);
+        const targetCount = Math.max(30, Math.round(BASE_COUNT * Math.sqrt(areaFactor)));
+        initParticles(targetCount);
+    }
+
+    function rand(min, max) { return Math.random() * (max - min) + min; }
+
+    function createParticle() {
+        const size = rand(3, 8);
+        return {
+            x: rand(0, W),
+            y: rand(0, H),
+            vx: rand(-0.08, 0.08),
+            vy: rand(-0.08, 0.08),
+            alpha: rand(0.5, 0.95),
+            size,
+            wavePhase: rand(0, Math.PI * 2),
+            brightness: rand(0.8, 1.2)
+        };
+    }
+
+    function initParticles(n) {
+        particles = new Array(n).fill(0).map(() => createParticle());
+    }
+
+    let lastT = performance.now();
+    function step(t) {
+        const dt = Math.min(50, t - lastT) / 16.67;
+        lastT = t;
+        ctx.clearRect(0, 0, W, H);
+        if (!particles.length) return requestAnimationFrame(step);
+
+        for (let p of particles) {
+            p.x += p.vx * dt * 2;
+            p.y += p.vy * dt * 2;
+            p.wavePhase += 0.01;
+
+            // Movimento ondulatorio lento e fluido
+            p.x += Math.sin((t / 4000) + p.wavePhase) * 0.3 * dt;
+            p.y += Math.cos((t / 5000) + p.wavePhase) * 0.2 * dt;
+
+            // Wrap around screen
+            if (p.x < -10) p.x = W + 10;
+            if (p.x > W + 10) p.x = -10;
+            if (p.y < -10) p.y = H + 10;
+            if (p.y > H + 10) p.y = -10;
+
+            ctx.save();
+            
+            // Glow effect
+            ctx.shadowColor = `rgba(173, 216, 230, ${p.alpha * 0.6})`;
+            ctx.shadowBlur = p.size * 2.5;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            
+            ctx.globalAlpha = p.alpha;
+            
+            // Cerchio principale con gradiente
+            const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+            gradient.addColorStop(0, `rgba(255, 255, 255, ${p.brightness})`);
+            gradient.addColorStop(0.6, `rgba(200, 230, 255, ${p.brightness * 0.8})`);
+            gradient.addColorStop(1, `rgba(173, 216, 230, ${p.brightness * 0.4})`);
+            ctx.fillStyle = gradient;
+            
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
+        }
+
+        requestAnimationFrame(step);
+    }
+
+    window.addEventListener('resize', resize, { passive: true });
+    resize();
+    lastT = performance.now();
+    requestAnimationFrame(step);
+})();
+        </script>
+
+    <script>
+    (function(){
+        const track = document.getElementById('carouselTrack');
+        if (!track) return;
+        const items = Array.from(track.children);
+        const prev = document.getElementById('prevBtn');
+        const next = document.getElementById('nextBtn');
+        let activeIndex = Math.floor(items.length/2);
+
+        function updateActive() {
+            const center = track.scrollLeft + track.clientWidth / 2;
+            let closest = 0, bestDist = Infinity;
+            items.forEach((it, idx) => {
+                const mid = it.offsetLeft + it.clientWidth/2;
+                const d = Math.abs(mid - center);
+                if (d < bestDist) { bestDist = d; closest = idx; }
+                it.classList.remove('active');
+            });
+            items[closest].classList.add('active');
+            activeIndex = closest;
+        }
+
+        function centerIndex(i){
+            const idx = (i + items.length) % items.length;
+            const it = items[idx];
+            const left = it.offsetLeft - (track.clientWidth/2 - it.clientWidth/2);
+            track.scrollTo({ left, behavior: 'smooth' });
+            setTimeout(updateActive, 260);
+        }
+
+        function debounce(fn, t=80){ let id; return (...a)=>{ clearTimeout(id); id=setTimeout(()=>fn(...a), t); }; }
+
+        track.addEventListener('scroll', debounce(updateActive, 80));
+        prev && prev.addEventListener('click', ()=> { pauseInteraction(); centerIndex(activeIndex-1); resumeAfterDelay(); });
+        next && next.addEventListener('click', ()=> { pauseInteraction(); centerIndex(activeIndex+1); resumeAfterDelay(); });
+
+        // autoplay with interaction-aware pause/resume
+        let autoplay = null;
+        const AUTOPLAY_INTERVAL = 5000; // 5s
+        let interactionTimeout = null;
+        let isInteracting = false;
+
+        function startAutoplay(){
+            // Autoplay disabled
+            if (autoplay) clearInterval(autoplay);
+            autoplay = null;
+        }
+
+        function stopAutoplay(){ if (autoplay) { clearInterval(autoplay); autoplay = null; } }
+
+        function pauseInteraction(){
+            isInteracting = true;
+            stopAutoplay();
+            if (interactionTimeout) { clearTimeout(interactionTimeout); interactionTimeout = null; }
+        }
+
+        function resumeAfterDelay(delay = 3500){
+            if (interactionTimeout) clearTimeout(interactionTimeout);
+            interactionTimeout = setTimeout(()=>{ isInteracting = false; startAutoplay(); }, delay);
+        }
+
+        // touch/pointer swipe removed per design request - navigation via buttons/autoplay only
+
+        // pause on wheel/keyboard interaction
+        track.addEventListener('wheel', ()=>{ pauseInteraction(); resumeAfterDelay(); }, {passive: true});
+        window.addEventListener('keydown', ()=>{ pauseInteraction(); resumeAfterDelay(); });
+
+        // pause on hover, resume on leave
+        track.addEventListener('mouseenter', ()=>{ pauseInteraction(); });
+        track.addEventListener('mouseleave', ()=>{ resumeAfterDelay(1200); });
+
+        // initial center after layout and start autoplay when idle
+        window.addEventListener('load', ()=> setTimeout(()=>{ centerIndex(activeIndex); startAutoplay(); }, 200));
+        window.addEventListener('resize', ()=> setTimeout(()=> centerIndex(activeIndex), 200));
+    })();
+    </script>
+
+    <script>
+    // Candidatura Fullscreen Functions
+    function openCandidaturaFullscreen() {
+        if (!currentUser) {
+            alert('You must be logged in to apply. Sign in first.');
+            openLoginModal();
+            return false;
+        }
+        document.getElementById('candidaturaSection').classList.add('active');
+    }
+
+    function closeCandidaturaFullscreen() {
+        document.getElementById('candidaturaSection').classList.remove('active');
+    }
+
+    // Candidatura Form Handler
+    function handleCandidatura(event) {
+        event.preventDefault();
+
+        // Get form values
+        const nome = document.getElementById('candNome').value.trim();
+        const email = document.getElementById('candEmail').value.trim();
+        const eta = document.getElementById('candEta').value.trim();
+        const esperienza = document.getElementById('candEsperienza').value.trim();
+        const attivita = document.getElementById('candAttivita').value.trim();
+        const prove = document.getElementById('candProve').value.trim();
+        const motivazione = document.getElementById('candMotivazione').value.trim();
+
+        const successMsg = document.getElementById('candidaturaSuccess');
+        const errorMsg = document.getElementById('candidaturaError');
+
+        // Reset messages
+        successMsg.classList.remove('show');
+        errorMsg.classList.remove('show');
+
+        // Basic validation
+        if (!nome || !email || !eta || !esperienza || !attivita || !motivazione) {
+            errorMsg.textContent = 'Fill all required fields.';
+            errorMsg.classList.add('show');
+            return;
+        }
+
+        if (eta < 13) {
+            errorMsg.textContent = 'You must be at least 13 years old to apply.';
+            errorMsg.classList.add('show');
+            return;
+        }
+
+        // Create candidatura object
+        const candidatura = {
+            nome,
+            email,
+            eta,
+            esperienza,
+            attivita,
+            prove,
+            motivazione,
+            dataInvio: new Date().toLocaleString('it-IT')
+        };
+
+        // Save to localStorage (or send to server)
+        let candidature = JSON.parse(localStorage.getItem('candidatureDM')) || [];
+        candidature.push(candidatura);
+        localStorage.setItem('candidatureDM', JSON.stringify(candidature));
+
+        // Show success message
+        successMsg.classList.add('show');
+
+        // Reset form
+        document.getElementById('candidaturaForm').reset();
+
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+            successMsg.classList.remove('show');
+        }, 5000);
+
+        console.log('Candidatura salvata:', candidatura);
+    }
+    </script>
+
+    <style>
+    .site-footer {
+        background: linear-gradient(135deg, #0e81af 0%, #0277bd 50%, #01579b 100%);
+        color: rgba(255,255,255,0.9);
+        padding: 40px 20px;
+        text-align: center;
+        font-size: 14px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .site-footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+        opacity: 0.1;
+    }
+
+    .site-footer .footer-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .site-footer p {
+        margin: 8px 0;
+        color: rgba(255,255,255,0.9);
+        font-weight: 300;
+    }
+
+    .site-footer .small {
+        color: rgba(255,255,255,0.75);
+        font-size: 13px;
+        margin-top: 12px;
+    }
+
+    .footer-links {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        flex-wrap: wrap;
+    }
+
+    .footer-links a {
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-links a:hover {
+        color: #ffd700;
+        background: rgba(255, 215, 0, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    @media (max-width: 600px) {
+        .site-footer {
+            padding: 30px 15px;
+            font-size: 13px;
+        }
+        .footer-links {
+            gap: 15px;
+        }
+    }
+    </style>
+
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-inner">
+            <p>© 2026 ITA Airways Virtual. All rights reserved.</p>
+            <p class="small">This is a virtual simulation project not affiliated with any real airline.</p>
+            <nav class="footer-links" aria-label="Footer links">
+                <a href="terminidiservizio.html">Terms of Service</a>
+                <a href="https://discord.gg/4AuweabPM8" target="_blank">Discord Community</a>
+            </nav>
+        </div>
+    </footer>
+
+    </body>
+</html>

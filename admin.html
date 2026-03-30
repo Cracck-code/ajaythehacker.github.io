@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - ITA Virtual</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(ellipse at top left, rgba(25,45,50,0.85) 0%, rgba(8,20,25,0.85) 40%, rgba(6,10,15,0.95) 100%), linear-gradient(135deg, #061016 0%, #0b2b2a 50%, #0a1f2a 100%);
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            background-color: rgba(30, 30, 50, 0.9);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        nav .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        nav .logo-section img {
+            height: 35px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        nav .logo-section span {
+            color: #ffd700;
+            font-weight: 900;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        nav a.back-btn {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav a.back-btn:hover {
+            color: #ffd700;
+        }
+
+        /* Canvas sfondo */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Container principale */
+        .container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Login Form */
+        .login-container {
+            background: linear-gradient(135deg, rgba(25, 45, 50, 0.9) 0%, rgba(8, 20, 25, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 3rem;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            animation: slideDown 0.3s ease;
+        }
+
+        .login-container h1 {
+            color: #ffd700;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ffd700;
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Admin Panel */
+        .admin-container {
+            background: linear-gradient(135deg, rgba(25, 45, 50, 0.9) 0%, rgba(8, 20, 25, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 1000px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .admin-container h1 {
+            color: #ffd700;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.85rem;
+            width: auto;
+        }
+
+        .btn-logout:hover {
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .users-table thead {
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+
+        .users-table th {
+            color: #ffd700;
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .users-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            word-break: break-all;
+        }
+
+        .users-table tbody tr:hover {
+            background-color: rgba(255, 215, 0, 0.05);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%);
+            border: none;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 10px rgba(255, 107, 107, 0.4);
+        }
+
+        .user-count {
+            color: #ffd700;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .no-users {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    
+    <!-- Navbar -->
+    <nav>
+        <div style="flex: 1;"></div>
+        <div class="logo-section">
+            <img src="Tail.png" alt="Logo">
+            <span>ADMIN PANEL</span>
+        </div>
+        <div style="flex: 1;"></div>
+        <a href="home.html" class="back-btn">← Back to Home</a>
+    </nav>
+
+    <!-- Container principale -->
+    <div class="container">
+        <!-- Login Form -->
+        <div id="loginForm" class="login-container">
+            <h1>Admin Login</h1>
+            <form onsubmit="handleAdminLogin(event)">
+                <div class="form-group">
+                    <label for="adminPassword">Admin Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+                </div>
+                <button type="submit" class="btn">Sign In</button>
+                <div class="error-message" id="errorMessage"></div>
+            </form>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="admin-container" style="display: none;">
+            <div class="admin-header">
+                <div>
+                    <h1>User Management</h1>
+                    <p class="user-count">Total users: <span id="userCount">0</span></p>
+                </div>
+                <button class="btn btn-logout" onclick="adminLogout()">Logout</button>
+            </div>
+
+            <div id="usersTableContainer">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                    </tbody>
+                </table>
+            </div>
+            <div id="noUsers" class="no-users" style="display: none;">No registered users</div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api'; // Cambia se il backend è su un'altra URL
+        let adminToken = null;
+
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            const password = document.getElementById('adminPassword').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            fetch(`${API_URL}/admin/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ password })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    adminToken = data.token;
+                    sessionStorage.setItem('adminToken', adminToken);
+                    document.getElementById('loginForm').style.display = 'none';
+                    document.getElementById('adminPanel').style.display = 'block';
+                    loadUsers();
+                } else {
+                    errorMessage.textContent = data.message || 'Incorrect password!';
+                    errorMessage.style.display = 'block';
+                }
+            })
+            .catch(err => {
+                errorMessage.textContent = 'Error connecting to server';
+                errorMessage.style.display = 'block';
+                console.error(err);
+            });
+        }
+
+        function adminLogout() {
+            adminToken = null;
+            sessionStorage.removeItem('adminToken');
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function loadUsers() {
+            fetch(`${API_URL}/users`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${adminToken || sessionStorage.getItem('adminToken')}`
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    displayUsers(data.users);
+                } else {
+                    console.error('Failed to load users:', data.message);
+                }
+            })
+            .catch(err => {
+                console.error('Error loading users:', err);
+            });
+        }
+
+        function displayUsers(users) {
+            const tableBody = document.getElementById('usersTableBody');
+            const userCount = document.getElementById('userCount');
+            const noUsers = document.getElementById('noUsers');
+
+            userCount.textContent = users.length;
+
+            if (users.length === 0) {
+                noUsers.style.display = 'block';
+                document.getElementById('usersTableContainer').style.display = 'none';
+                return;
+            }
+
+            noUsers.style.display = 'none';
+            document.getElementById('usersTableContainer').style.display = 'block';
+            tableBody.innerHTML = '';
+
+            users.forEach((user) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.username}</td>
+                    <td>${user.email}</td>
+                    <td>${user.password || '***'}</td>
+                    <td><button class="btn-delete" onclick="deleteUser('${user._id || user.id}')">Delete</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                fetch(`${API_URL}/users/${userId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken || sessionStorage.getItem('adminToken')}`
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        loadUsers();
+                    } else {
+                        alert('Failed to delete user: ' + (data.message || 'Unknown error'));
+                    }
+                })
+                .catch(err => {
+                    console.error('Error deleting user:', err);
+                    alert('Error deleting user');
+                });
+            }
+        }
+
+        // Verifica accesso admin al caricamento
+        window.addEventListener('load', function() {
+            const token = sessionStorage.getItem('adminToken');
+            if (token) {
+                adminToken = token;
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadUsers();
+            }
+        });
+
+        // Canvas animato
+        (function(){
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext && canvas.getContext('2d');
+            if(!ctx) return;
+            let w = canvas.width = window.innerWidth;
+            let h = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', ()=>{
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+                initParticles();
+            });
+
+            const particles = [];
+
+            function rand(min, max){ return Math.random()*(max-min)+min; }
+
+            function initParticles(){
+                particles.length = 0;
+                const count = Math.max(35, Math.round((w*h)/90000));
+                for(let i=0;i<count;i++){
+                    particles.push({
+                        x: rand(0,w),
+                        y: rand(0,h),
+                        r: rand(0.6,2.6),
+                        baseAlpha: rand(0.15,0.9),
+                        dx: rand(-0.12,0.12),
+                        dy: rand(-0.04,0.04),
+                        blink: Math.random()*Math.PI*2
+                    });
+                }
+            }
+
+            function draw(){
+                ctx.clearRect(0,0,w,h);
+                for(const p of particles){
+                    p.x += p.dx;
+                    p.y += p.dy;
+                    p.blink += 0.02;
+                    const a = Math.max(0, Math.min(1, p.baseAlpha + Math.sin(p.blink)*0.35));
+
+                    const gx = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*8);
+                    gx.addColorStop(0, `rgba(200,230,255,${a})`);
+                    gx.addColorStop(0.35, `rgba(120,200,220,${a*0.6})`);
+                    gx.addColorStop(1, 'rgba(10,16,20,0)');
+
+                    ctx.fillStyle = gx;
+                    ctx.fillRect(p.x - p.r*8, p.y - p.r*8, p.r*16, p.r*16);
+
+                    if(p.x < -60) p.x = w + 60;
+                    if(p.x > w + 60) p.x = -60;
+                    if(p.y < -60) p.y = h + 60;
+                    if(p.y > h + 60) p.y = -60;
+                }
+                requestAnimationFrame(draw);
+            }
+
+            initParticles();
+            draw();
+        })();
+
+        // Canvas animato
+        (function(){
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext && canvas.getContext('2d');
+            if(!ctx) return;
+            let w = canvas.width = window.innerWidth;
+            let h = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', ()=>{
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+                initParticles();
+            });
+
+            const particles = [];
+
+            function rand(min, max){ return Math.random()*(max-min)+min; }
+
+            function initParticles(){
+                particles.length = 0;
+                const count = Math.max(35, Math.round((w*h)/90000));
+                for(let i=0;i<count;i++){
+                    particles.push({
+                        x: rand(0,w),
+                        y: rand(0,h),
+                        r: rand(0.6,2.6),
+                        baseAlpha: rand(0.15,0.9),
+                        dx: rand(-0.12,0.12),
+                        dy: rand(-0.04,0.04),
+                        blink: Math.random()*Math.PI*2
+                    });
+                }
+            }
+
+            function draw(){
+                ctx.clearRect(0,0,w,h);
+                for(const p of particles){
+                    p.x += p.dx;
+                    p.y += p.dy;
+                    p.blink += 0.02;
+                    const a = Math.max(0, Math.min(1, p.baseAlpha + Math.sin(p.blink)*0.35));
+
+                    const gx = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*8);
+                    gx.addColorStop(0, `rgba(200,230,255,${a})`);
+                    gx.addColorStop(0.35, `rgba(120,200,220,${a*0.6})`);
+                    gx.addColorStop(1, 'rgba(10,16,20,0)');
+
+                    ctx.fillStyle = gx;
+                    ctx.fillRect(p.x - p.r*8, p.y - p.r*8, p.r*16, p.r*16);
+
+                    if(p.x < -60) p.x = w + 60;
+                    if(p.x > w + 60) p.x = -60;
+                    if(p.y < -60) p.y = h + 60;
+                    if(p.y > h + 60) p.y = -60;
+                }
+                requestAnimationFrame(draw);
+            }
+
+            initParticles();
+            draw();
+        })();
+    </script>
+</body>
+</html>

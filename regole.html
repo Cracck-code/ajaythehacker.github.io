@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rules - ITA Virtual</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 25%, #01579b 50%, #0277bd 75%, #039be5 100%);
+            font-family: 'Arial',sans-serif;
+            color:#fff;
+            min-height:100vh;
+            display:flex;flex-direction:column;overflow:auto;
+            background-attachment: fixed;
+        }
+        nav{background-color:rgba(30,30,50,0.95);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid rgba(255,215,0,0.3);position:relative;z-index:2;backdrop-filter:blur(10px);box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+        .logo-section{display:flex;align-items:center;gap:0.8rem}
+        .logo-section img{height:35px;width:auto;object-fit:contain}
+        .logo-section span{color:#ffd700;font-weight:900;font-size:1.1rem;letter-spacing:2px;font-family:'Orbitron',sans-serif;text-shadow:0 0 10px rgba(255,215,0,0.6),0 2px 4px rgba(0,0,0,0.5)}
+        nav a{color:#fff;text-decoration:none;font-size:0.95rem;transition:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);display:flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;border-radius:8px;position:relative;overflow:hidden}
+        nav a::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,215,0,0.2),transparent);transition:left 0.5s}
+        nav a:hover::before{left:100%}
+        nav a:hover{color:#ffd700;background:rgba(255,215,0,0.1);transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,215,0,0.3)}
+        #bg-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
+        .container{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:4rem;max-width:1200px;margin:0 auto;z-index:2;animation:fadeInUp 1s ease-out}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .card{background:linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));border:1px solid rgba(255,255,255,0.15);padding:3rem;border-radius:16px;backdrop-filter:blur(10px);max-width:900px;width:100%;box-shadow:0 25px 70px rgba(0,0,0,0.5);transition:all 0.3s ease}
+        .card:hover{transform:translateY(-5px);box-shadow:0 35px 90px rgba(0,0,0,0.6)}
+        .card h1{font-size:3rem;color:#ffd700;margin-bottom:1.5rem;text-align:center;font-weight:700;text-shadow:0 2px 10px rgba(255,215,0,0.3)}
+        .card h2{font-size:1.6rem;color:#ffd700;margin-top:2rem;margin-bottom:1rem;border-bottom:2px solid rgba(255,215,0,0.3);padding-bottom:0.5rem}
+        .card p{color:rgba(255,255,255,0.9);margin-bottom:1rem;line-height:1.7;font-size:1.1rem}
+        ul{margin-left:1.5rem;margin-bottom:1rem}
+        li{margin-bottom:0.75rem;color:rgba(255,255,255,0.95);line-height:1.6;position:relative;padding-left:1rem;font-size:1.05rem}
+        li::before{content:'•';position:absolute;left:0;color:#ffd700;font-weight:bold}
+        .note{font-size:1rem;color:rgba(255,255,255,0.75);margin-top:1.5rem;padding:1.2rem;background:rgba(255,215,0,0.1);border-left:4px solid #ffd700;border-radius:8px}
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <nav>
+        <div class="logo-section">
+            <img src="Tail.png" alt="Logo">
+            <span>ITA Airways Virtual</span>
+        </div>
+        <div>
+            <a href="home.html"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="forum.html"><i class="fa-solid fa-user"></i> Register</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card" role="main">
+            <h1>Rules</h1>
+
+            <h2>Primary Rules</h2>
+            <ul>
+                <li>Obey all of Discord's TOS (includes the 13+ age requirement).</li>
+                <li>Use common sense.</li>
+                <li>Don't be toxic to others. We want to make sure our members feel as accepted as possible, regardless of their race, religion, sexuality, etc.</li>
+                <li>Sensitive or inappropriate content/topics is not allowed. (GORE, NSFW, etc.)</li>
+                <li>Do not spam/flood any chats.</li>
+                <li>Self promotion is not allowed in this server.</li>
+                <li>Abusing soundboards in voice channels is prohibited.</li>
+                <li>Death threats and/or doxx threats are not tolerated.</li>
+                <li>Evading punishments is forbidden.</li>
+            </ul>
+            <p class="note">You are required to follow any instructions given by any member of staff, and they may moderate the server at their discretion if they deem necessary.</p>
+
+            <h2>PIREP Rules</h2>
+            <ul>
+                <li>Flights may be on either a public server or on the PFACT network. While we encourage and recommend you fly on the PFACT network, it is not required.</li>
+                <li>You must act professional while flying as Southwest.</li>
+                <li>Do not log a flight until you have fully parked at the airport.</li>
+                <li>Flights must be international; domestic flights are not allowed.</li>
+                <li>Touch and goes are not permitted. They do not count as flights.</li>
+                <li>If flying on the PFACT network, include "Southwest Virtual" at the bottom of your flight plan.</li>
+                <li>You must cruise at or above 5000 feet.</li>
+                <li>Do not log a flight and put the user as someone else. Only YOU can file PIREPs for YOU.</li>
+                <li>When taking a screenshot of your flight from PFTracker, please ensure the following are visible in your screenshot: flight trail, callsign, and flight information (altitude, speed, heading, aircraft type).</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced background particle canvas
+        (function(){
+            const canvas = document.querySelector('#bg-canvas');
+            if (!canvas || !canvas.getContext) return;
+            const ctx = canvas.getContext('2d');
+
+            let DPR = Math.max(1, window.devicePixelRatio || 1);
+            let W = 0, H = 0;
+            let particles = [];
+            const BASE_COUNT = 80;
+
+            function resize() {
+                DPR = Math.max(1, window.devicePixelRatio || 1);
+                W = window.innerWidth;
+                H = window.innerHeight;
+                canvas.style.width = W + 'px';
+                canvas.style.height = H + 'px';
+                canvas.width = Math.floor(W * DPR);
+                canvas.height = Math.floor(H * DPR);
+                ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+                const areaFactor = (W * H) / (1280 * 720);
+                const targetCount = Math.max(30, Math.round(BASE_COUNT * Math.sqrt(areaFactor)));
+                initParticles(targetCount);
+            }
+
+            function rand(min, max) { return Math.random() * (max - min) + min; }
+
+            function createParticle() {
+                const size = rand(3, 8);
+                return {
+                    x: rand(0, W),
+                    y: rand(0, H),
+                    vx: rand(-0.08, 0.08),
+                    vy: rand(-0.08, 0.08),
+                    alpha: rand(0.5, 0.95),
+                    size,
+                    wavePhase: rand(0, Math.PI * 2),
+                    brightness: rand(0.8, 1.2)
+                };
+            }
+
+            function initParticles(n) {
+                particles = new Array(n).fill(0).map(() => createParticle());
+            }
+
+            let lastT = performance.now();
+            function step(t) {
+                const dt = Math.min(50, t - lastT) / 16.67;
+                lastT = t;
+                ctx.clearRect(0, 0, W, H);
+                if (!particles.length) return requestAnimationFrame(step);
+
+                for (let p of particles) {
+                    p.x += p.vx * dt * 2;
+                    p.y += p.vy * dt * 2;
+                    p.wavePhase += 0.01;
+
+                    p.x += Math.sin((t / 4000) + p.wavePhase) * 0.3 * dt;
+                    p.y += Math.cos((t / 5000) + p.wavePhase) * 0.2 * dt;
+
+                    if (p.x < -10) p.x = W + 10;
+                    if (p.x > W + 10) p.x = -10;
+                    if (p.y < -10) p.y = H + 10;
+                    if (p.y > H + 10) p.y = -10;
+
+                    ctx.save();
+
+                    ctx.shadowColor = `rgba(173, 216, 230, ${p.alpha * 0.6})`;
+                    ctx.shadowBlur = p.size * 2.5;
+                    ctx.shadowOffsetX = 0;
+                    ctx.shadowOffsetY = 0;
+
+                    ctx.globalAlpha = p.alpha;
+
+                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+                    gradient.addColorStop(0, `rgba(255, 255, 255, ${p.brightness})`);
+                    gradient.addColorStop(0.6, `rgba(200, 230, 255, ${p.brightness * 0.8})`);
+                    gradient.addColorStop(1, `rgba(173, 216, 230, ${p.brightness * 0.4})`);
+                    ctx.fillStyle = gradient;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.restore();
+                }
+
+                requestAnimationFrame(step);
+            }
+
+            window.addEventListener('resize', resize, { passive: true });
+            resize();
+            lastT = performance.now();
+            requestAnimationFrame(step);
+        })();
+    </script>
+
+    <style>
+    .site-footer {
+        background: linear-gradient(135deg, #0e81af 0%, #0277bd 50%, #01579b 100%);
+        color: rgba(255,255,255,0.9);
+        padding: 40px 20px;
+        text-align: center;
+        font-size: 14px;
+        position: relative;
+        overflow: hidden;
+        margin-top: auto;
+    }
+
+    .site-footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+        opacity: 0.1;
+    }
+
+    .site-footer .footer-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .site-footer p {
+        margin: 8px 0;
+        color: rgba(255,255,255,0.9);
+        font-weight: 300;
+    }
+
+    .site-footer .small {
+        color: rgba(255,255,255,0.75);
+        font-size: 13px;
+        margin-top: 12px;
+    }
+
+    .footer-links {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        flex-wrap: wrap;
+    }
+
+    .footer-links a {
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-links a:hover {
+        color: #ffd700;
+        background: rgba(255, 215, 0, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    @media (max-width: 600px) {
+        .site-footer {
+            padding: 30px 15px;
+            font-size: 13px;
+        }
+        .footer-links {
+            gap: 15px;
+        }
+    }
+    </style>
+
+</body>
+</html>
