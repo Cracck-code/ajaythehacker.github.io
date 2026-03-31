@@ -12,6 +12,7 @@ const JWT_SECRET = 'your_secret_key_change_this'; // Cambia questa chiave segret
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
 // File per salvare gli utenti
 const USERS_FILE = path.join(__dirname, 'users.json');
